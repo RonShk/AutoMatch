@@ -97,8 +97,8 @@ function openSignUp() {
   const scrollTop = window.scrollY || document.documentElement.scrollTop;
   document.getElementsByClassName('login-window')[0].style.top = scrollTop + window.innerHeight / 2 + 'px';
 
-  disableHeaderButtons();
   applyOverlay();
+  disableHeaderButtons();
   disableScroll();
   clearSignup();
 }
