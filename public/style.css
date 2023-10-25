@@ -294,6 +294,10 @@ input[type='checkbox'] {
   display: none;
 }
 
+.switchType:hover {
+  cursor: pointer;
+}
+
 /* Animations */
 @keyframes shake {
   0%,
