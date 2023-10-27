@@ -63,7 +63,7 @@ function applyOverlay() {
   }
   if (header) {
     header.classList.add('overlayHeader');
-    headerBtn.style.backgroundColor = "#919191b4"
+    headerBtn.style.backgroundColor = '#919191b4';
   }
 }
 
@@ -77,7 +77,7 @@ function removeOverlay() {
   }
   if (header) {
     header.classList.remove('overlayHeader');
-    headerBtn.style.backgroundColor = "#ffffffb4"
+    headerBtn.style.backgroundColor = '#ffffffb4';
   }
 }
 
@@ -89,7 +89,7 @@ function disableHeaderButtons() {
   const headerTitle = document.getElementById('title');
   const headerTitleDiv = document.querySelector('.header-title');
 
-  anchorElements.forEach((anchor) => {
+  anchorElements.forEach(anchor => {
     buttonInfo.push({
       element: anchor,
       disabled: anchor.classList.add('disabled'),
@@ -99,8 +99,7 @@ function disableHeaderButtons() {
     anchor.onclick = null;
   });
 
-  headerTitleDiv.classList.add('disabled'),
-  headerTitle.removeAttribute('href');
+  headerTitleDiv.classList.add('disabled'), headerTitle.removeAttribute('href');
 }
 
 function enableHeaderButtons() {
@@ -109,8 +108,7 @@ function enableHeaderButtons() {
   const headerTitleDiv = document.querySelector('.header-title');
   const anchorElements = headerSections.querySelectorAll('a');
 
-
-  anchorElements.forEach((anchor) => {
+  anchorElements.forEach(anchor => {
     anchor.classList.remove('disabled');
   });
 
@@ -327,6 +325,7 @@ function createLogoutButton() {
 }
 
 // Function to update login/signup buttons
+let shouldReload = true; // Initialize the flag
 function updateLoginButtons() {
   const loginBtn = document.getElementById('loginBtn');
   const signupBtn = document.getElementById('signupBtn');
@@ -335,15 +334,26 @@ function updateLoginButtons() {
   fetch('/check-login-status')
     .then(response => response.json())
     .then(data => {
-      const { isLoggedIn } = data;
+      const { isLoggedIn, id } = data;
 
       if (isLoggedIn) {
         loginBtn.style.display = 'none'; // Hide "Log In" button
         signupBtn.style.display = 'none'; // Hide "Sign Up" button
+
+        const stateObj = { foo: 'updated' };
+        const title = 'Updated Page Title';
+        const updatedUrl = `/?objectid=${id}`;
+        window.history.replaceState(stateObj, title, updatedUrl);
+
         createLogoutButton(); // Create and append "Log Out" button
       } else {
         loginBtn.style.display = 'block'; // Show "Log In" button
         signupBtn.style.display = 'block'; // Show "Sign Up" button
+        const stateObj = { foo: 'updated' };
+        const title = 'Updated Page Title';
+        const updatedUrl = `/`;
+
+        window.history.replaceState(stateObj, title, updatedUrl);
       }
     })
     .catch(error => {

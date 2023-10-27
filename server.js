@@ -166,6 +166,11 @@ app.post('/login-form', async (req, res) => {
 app.get('/check-login-status', (req, res) => {
   // Check if the user is logged in based on the session
   const isLoggedIn = req.session.user ? true : false;
+  if (req.session.user && req.session.user.id) {
+    const id = req.session.user.id;
+    res.json({ isLoggedIn, id });
+    return;
+  }
 
   res.json({ isLoggedIn });
 });
