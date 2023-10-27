@@ -297,7 +297,7 @@ function loginSubmission(email, password) {
 }
 
 // Function to create a "Log Out" button
-function createLogoutButton() {
+function createLogoutButton(id) {
   const logoutBtn = document.createElement('a');
   logoutBtn.textContent = 'Log Out';
   logoutBtn.className = 'header-section';
@@ -319,9 +319,17 @@ function createLogoutButton() {
       });
   };
 
+  const dashboardBtn = document.createElement('a');
+  dashboardBtn.textContent = 'Dashboard';
+  dashboardBtn.id = 'dashboardBtn';
+  dashboardBtn.className = 'header-section';
+  dashboardBtn.onclick = function () {
+    location.href = '/dashboard?objectid=' + id;
+  };
   // Append the "Log Out" button to the header
   const headerSections = document.querySelector('.header-sections');
   headerSections.appendChild(logoutBtn);
+  headerSections.appendChild(dashboardBtn);
 }
 
 // Function to update login/signup buttons
@@ -345,7 +353,7 @@ function updateLoginButtons() {
         const updatedUrl = `/?objectid=${id}`;
         window.history.replaceState(stateObj, title, updatedUrl);
 
-        createLogoutButton(); // Create and append "Log Out" button
+        createLogoutButton(id); // Create and append "Log Out" button
       } else {
         loginBtn.style.display = 'block'; // Show "Log In" button
         signupBtn.style.display = 'block'; // Show "Sign Up" button
