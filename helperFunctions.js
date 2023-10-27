@@ -13,7 +13,7 @@ async function sendConfirmation(userEmail, objectID) {
     from: 'ronshaked07@gmail.com',
     to: userEmail,
     subject: 'Confirmation Email',
-    text: `Click here to confirm your account: http://localhost:8080/addedUsersPage?objectid=${objectID}`
+    text: `Click here to confirm your account: http://localhost:8080/confirm/user?objectid=${objectID}`
   };
 
   transporter.sendMail(details, (error, info) => {

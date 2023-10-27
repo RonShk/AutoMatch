@@ -90,7 +90,7 @@ app.post('/join-button-form', async (req, res) => {
   }
 });
 
-app.get('/addedUsersPage', async (req, res) => {
+app.get('/confirm/user', async (req, res) => {
   const objectId = req.query.objectid;
 
   try {
@@ -108,10 +108,17 @@ app.get('/addedUsersPage', async (req, res) => {
     });
 
     if (deletePendingUser.deletedCount === 1) {
-      res.status(200).sendFile(__dirname + '/addedUsersPage.html');
+      req.session.user = {
+        id: user._id, // Assuming you have a unique user ID
+        email: user.email
+        // Add other user-related data as needed
+      };
+      res.status(500).redirect('/');
+      console.log(req.session.user);
+
       console.log('Everything worked correctly in making the user and adding to the database');
     } else {
-      res.status(500).sendFile(__dirname + '/addedUsersPage.html');
+      res.status(200).sendFile(__dirname + '/addedUsersPage.html');
       console.log('Deleted count was not 1 ');
     }
   } catch (err) {
