@@ -1,7 +1,7 @@
 /* Root/Entire Document Rules */
 
 * {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 :root {
@@ -11,16 +11,16 @@
 
 .overlay {
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 15; 
+  z-index: 15;
 }
 
 .overlayHeader {
   background-color: rgba(102, 102, 102, 0.5);
-  z-index: 15; 
+  z-index: 15;
 }
 
 body::before {
-  content: "";
+  content: '';
   position: fixed;
   top: 0;
   left: 0;
@@ -47,10 +47,10 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  position: fixed; 
-  left: 50%; 
-  transform: translateX(-50%); 
-  border-radius: 15px; 
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 15px;
   top: 10px;
   z-index: 1;
 }
@@ -58,7 +58,7 @@ header {
 .header-sections {
   display: flex;
   align-items: center;
-  margin-left: 2em; 
+  margin-left: 2em;
   flex: 1 1 auto;
 }
 
@@ -66,8 +66,8 @@ header {
   margin: 0;
   color: #000000;
   font-size: 1.4em;
-  font-family: "Alata", sans-serif;
-  margin-right: auto; 
+  font-family: 'Alata', sans-serif;
+  margin-right: auto;
   transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -76,11 +76,11 @@ header {
 }
 
 .header-sections a {
-  margin-left: 3.15em; 
+  margin-left: 3.15em;
   color: #000000;
   text-decoration: none;
   font-size: 1.1em;
-  font-family: "Alata", sans-serif;
+  font-family: 'Alata', sans-serif;
 }
 
 .header-sections a:not(.disabled):hover,
@@ -96,8 +96,8 @@ header {
   cursor: not-allowed;
 }
 
-
-#signupBtn {
+#signupBtn,
+#dashboardBtn {
   background-color: #ffffffb4;
   border: 0 solid #e2e8f0;
   border-radius: 1.5rem;
@@ -139,8 +139,8 @@ header {
   text-align: center;
   font-size: 45px;
   letter-spacing: 0.06em;
-  font-family: "Alata", sans-serif;
-  margin-top: 150px; 
+  font-family: 'Alata', sans-serif;
+  margin-top: 150px;
   margin-bottom: 55px;
 }
 
@@ -172,7 +172,6 @@ header {
   height: 500px;
   width: auto;
 } */
-
 
 /* Login/Signup Panels */
 
@@ -221,17 +220,17 @@ header {
   width: 380px;
   height: 480px;
   position: absolute;
-  top: 50%; 
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background: #fff;
   padding: 5px;
   z-index: 1;
   border-radius: 15px;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
-input  {
+input {
   border: none;
   width: 100%;
   border-bottom: 1px solid rgb(30, 30, 30);

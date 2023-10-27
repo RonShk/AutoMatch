@@ -3,6 +3,7 @@ const { MongoClient, ObjectId } = require('mongodb');
 const crypto = require('crypto');
 const { sendConfirmation, hashStringToBase64, checkUserAuthentication } = require('./helperFunctions');
 const session = require('express-session');
+const { serialize } = require('v8');
 const MongoDBStore = require('connect-mongodb-session')(session);
 
 const app = express();
@@ -37,12 +38,26 @@ async function connectToDB() {
   }
 }
 
+async function fetchUserSearches(objectid) {
+  const { db, client } = await connectToDB();
+  const searchCollection = db.collection('userSearches');
+
+  // Query the database to find searches with a matching searchID (objectid)
+  const searchResults = await searchCollection.find({ searchID: objectid }).toArray();
+
+  return searchResults;
+}
+
 app.use(express.json());
 app.use(express.static('public'));
 app.use(checkUserAuthentication);
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/homepage.html');
+});
+
+app.get('/dashboard', async (req, res) => {
+  res.sendFile(__dirname + '/dashboard.html');
 });
 
 app.post('/join-button-form', async (req, res) => {
@@ -184,6 +199,43 @@ app.get('/logout', (req, res) => {
       res.sendStatus(200); // Session destroyed successfully
     }
   });
+});
+
+app.post('/user-searches', async (req, res) => {
+  try {
+    const { make, model, minYear, maxYear, minPrice, maxPrice, objectid } = req.body;
+
+    // Now you have access to make, model, minYear, maxYear, minPrice, maxPrice, and objectid
+
+    // You can perform any necessary processing with the search criteria and objectid here
+    // For example, you can use objectid to identify the user making the search
+    const { db, client } = await connectToDB();
+    const searchCollection = db.collection('userSearches');
+
+    searchCollection.insertOne({
+      searchID: objectid,
+      make,
+      model,
+      minYear,
+      maxYear,
+      minPrice,
+      maxPrice
+    });
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.error(error);
+    res.status(500);
+  }
+});
+
+app.get('/user-previous-searches', async (req, res) => {
+  const objectid = req.query.objectid; // Get the objectid from the query string
+
+  // Fetch search results from the database based on the provided objectid
+  const searchResults = await fetchUserSearches(objectid); // Implement this function
+
+  res.json(searchResults);
 });
 
 app.listen(port, () => console.log(`Successfully running on Port: ${port}`));

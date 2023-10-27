@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form action="/user-searchs" method="post">
+      <label for="make">Make:</label>
+      <input type="text" id="make" name="make" />
+      <br />
+
+      <label for="model">Model</label>
+      <input type="text" id="model" name="model" />
+      <br />
+
+      <label for="minYear">Minimum Year:</label>
+      <input type="text" id="minYear" name="minYear" />
+      <br />
+
+      <label for="maxYear">Maximum Year:</label>
+      <input type="text" id="maxYear" name="maxYear" />
+      <br />
+
+      <label for="minPrice">Minimum Price</label>
+      <input type="text" id="minPrice" name="minPrice" />
+
+      <label for="maxPrice">Maximum Price</label>
+      <input type="text" id="maxPrice" name="maxPrice" />
+
+      <button type="submit" id="searchSubmit">Search</button>
+    </form>
+    <div id="searchDiv"></div>
+    <div id="tableDiv"></div>
+
+    <script src="dashboard.js"></script>
+  </body>
+</html>
