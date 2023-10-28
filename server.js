@@ -205,14 +205,10 @@ app.post('/user-searches', async (req, res) => {
   try {
     const { make, model, minYear, maxYear, minPrice, maxPrice, objectid } = req.body;
 
-    // Now you have access to make, model, minYear, maxYear, minPrice, maxPrice, and objectid
-
-    // You can perform any necessary processing with the search criteria and objectid here
-    // For example, you can use objectid to identify the user making the search
     const { db, client } = await connectToDB();
     const searchCollection = db.collection('userSearches');
 
-    searchCollection.insertOne({
+    const searchItem = {
       searchID: objectid,
       make,
       model,
@@ -220,12 +216,19 @@ app.post('/user-searches', async (req, res) => {
       maxYear,
       minPrice,
       maxPrice
-    });
+    };
 
-    res.sendStatus(200);
+    const result = await searchCollection.insertOne(searchItem);
+
+    if (result.insertedId) {
+      res.sendStatus(200);
+    } else {
+      console.log('got to else block');
+      res.sendStatus(500);
+    }
   } catch (error) {
-    console.error(error);
-    res.status(500);
+    console.log('get to catch block');
+    res.sendStatus(500);
   }
 });
 
@@ -236,6 +239,32 @@ app.get('/user-previous-searches', async (req, res) => {
   const searchResults = await fetchUserSearches(objectid); // Implement this function
 
   res.json(searchResults);
+});
+
+app.delete('/delete-search', async (req, res) => {
+  try {
+    const objectID = req.body.objectID; // Retrieve the objectID as a string
+    const objectIdToQuery = new ObjectId(objectID);
+
+    if (!objectID) {
+      res.status(400).send('Invalid objectID');
+      return;
+    }
+
+    const { db, client } = await connectToDB();
+    const searchCollection = db.collection('userSearches');
+
+    const deleteResult = await searchCollection.deleteOne({ _id: objectIdToQuery });
+
+    if (deleteResult.deletedCount === 1) {
+      res.sendStatus(200);
+    } else {
+      res.status(404).send('Search not found');
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error deleting search');
+  }
 });
 
 app.listen(port, () => console.log(`Successfully running on Port: ${port}`));
