@@ -89,7 +89,7 @@ function generateSearchTable(searchResults) {
     const headerRow = document.createElement('tr');
 
     // Define the column headers
-    const headers = ['Make', 'Model', 'Min Price', 'Max Price', 'Min Year', 'Max Year'];
+    const headers = ['Make', 'Model', 'Min Price', 'Max Price', 'Min Year', 'Max Year', 'Actions'];
 
     // Create table headers
     headers.forEach(headerText => {
@@ -110,6 +110,20 @@ function generateSearchTable(searchResults) {
         cell.appendChild(document.createTextNode(result[field] || ''));
         row.appendChild(cell);
       });
+
+      // Add a delete button
+      const deleteCell = document.createElement('td');
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'Delete';
+      deleteButton.addEventListener('click', () => {
+        handleDeleteSearch(result._id);
+      });
+      deleteCell.appendChild(deleteButton);
+      row.appendChild(deleteCell);
+
+      // Set the data-objectid attribute on the delete button
+      deleteButton.setAttribute('data-objectid', result.objectID);
+
       tbody.appendChild(row);
     });
 
@@ -121,4 +135,28 @@ function generateSearchTable(searchResults) {
   } else {
     tableDiv.innerHTML = 'No searches found, please make a search.';
   }
+}
+
+function handleDeleteSearch(objectID) {
+  // Send a DELETE request to the server to delete the specific search
+
+  const objectIDString = objectID.toString();
+  fetch(`/delete-search`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ objectID: objectIDString }) // Send the objectID as a string
+  })
+    .then(response => {
+      if (response.status === 200) {
+        // Search deleted successfully, refresh the page
+        window.location.reload();
+      } else {
+        console.error('Error deleting search');
+      }
+    })
+    .catch(error => {
+      console.error('Error deleting search:', error);
+    });
 }
