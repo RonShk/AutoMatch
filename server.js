@@ -67,18 +67,18 @@ app.post('/join-button-form', async (req, res) => {
     const usersCollection = db.collection('users');
 
     const { name, email, password } = req.body;
-    console.log(name, email, password);
+    // console.log(name, email, password);
 
     const user = await usersCollection.findOne({ email: email });
 
     if (user) {
-      console.log('User exists in the database:', user);
+      // console.log('User exists in the database:', user);
       res.sendStatus(409); // If the user already has an account
       return; // Exit the function to prevent further execution
     }
 
     const hashedPassword = await hashStringToBase64(password);
-    console.log(`HashedPassword: ${hashedPassword}`);
+    // console.log(`HashedPassword: ${hashedPassword}`);
 
     const pendingUser = {
       name: name,
@@ -128,13 +128,12 @@ app.get('/confirm/user', async (req, res) => {
         email: user.email
         // Add other user-related data as needed
       };
-      res.status(500).redirect('/');
-      console.log(req.session.user);
+      res.status(200).redirect('/');
 
-      console.log('Everything worked correctly in making the user and adding to the database');
+      // console.log('Everything worked correctly in making the user and adding to the database');
     } else {
-      res.status(200).sendFile(__dirname + '/addedUsersPage.html');
-      console.log('Deleted count was not 1 ');
+      res.status(500).sendFile(__dirname + '/addedUsersPage.html');
+      // console.log('Deleted count was not 1 ');
     }
   } catch (err) {
     console.error(err);
@@ -167,7 +166,7 @@ app.post('/login-form', async (req, res) => {
       };
 
       res.status(200).json({ message: 'Login successful' });
-      console.log('Logged In');
+      // console.log('Logged In');
     } else {
       res.status(401).json({ message: 'Incorrect password' });
     }
@@ -223,11 +222,9 @@ app.post('/user-searches', async (req, res) => {
     if (result.insertedId) {
       res.sendStatus(200);
     } else {
-      console.log('got to else block');
       res.sendStatus(500);
     }
   } catch (error) {
-    console.log('get to catch block');
     res.sendStatus(500);
   }
 });
