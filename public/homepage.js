@@ -105,6 +105,32 @@ function enableHeaderButtons() {
   headerTitle.setAttribute('href', '/');
 }
 
+function clearLogin() {
+  const form = document.getElementById('login-form');
+  const inputs = form.getElementsByTagName('input');
+
+  for (let i = 0; i < inputs.length; i++) {
+    if (inputs[i].type !== 'checkbox') {
+      inputs[i].value = '';
+    } else {
+      inputs[i].checked = false;
+    }
+  }
+}
+
+function clearSignup() {
+  const form = document.getElementById('signup-form');
+  const inputs = form.getElementsByTagName('input');
+
+  for (let i = 0; i < inputs.length; i++) {
+    if (inputs[i].type !== 'checkbox') {
+      inputs[i].value = '';
+    } else {
+      inputs[i].checked = false;
+    }
+  }
+}
+
 function openLogin() {
   document.getElementsByClassName('login-window')[0].style.display = 'block';
   document.getElementById('login-form').style.display = 'block';
@@ -320,7 +346,6 @@ let shouldReload = true; // Initialize the flag
 function updateLoginButtons() {
   const loginBtn = document.getElementById('loginBtn');
   const signupBtn = document.getElementById('signupBtn');
-  const signoutBtn = document.getElementById('signoutBtn');
   const dashboardBtn = document.getElementById('dashboardBtn');
 
   // Send a request to the server to check if the user is logged in
@@ -343,7 +368,6 @@ function updateLoginButtons() {
       } else {
         loginBtn.style.display = 'block'; // Show "Log In" button
         signupBtn.style.display = 'block'; // Show "Sign Up" button
-        signoutBtn.style.display = 'none'
         dashboardBtn.style.display = 'none';
 
         const stateObj = { foo: 'updated' };
