@@ -132,6 +132,39 @@ header {
   display: none;
 }
 
+.logo img {
+  max-width: 29px;
+  height: auto;
+  margin-left: 50px;
+}
+
+.logo:hover {
+  cursor: pointer;
+}
+
+.logo {
+  background: none;
+  color: black;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 45%;
+  display: none;
+}
+
+@media screen and (max-width: 1400px) {
+  .header-sections:not(.logo) {
+    display: none;
+  }
+  .logo {
+    display: block;
+  }
+  header {
+    width: 20vw;
+    padding-right: 0;
+  }
+}
+
 /* Homepage */
 
 .homepage-title {
