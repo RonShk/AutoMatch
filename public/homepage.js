@@ -4,36 +4,19 @@ let signupForm = document.getElementById('signup-form');
 let fieldIssuesSignUpDiv = document.getElementById('fieldIssuesSignUp');
 let fieldIssuesLoginDiv = document.getElementById('fieldIssuesLoginDiv');
 
+let currentSection = 'about'; // Initialize the current section
+
 function scrollToElement(elementId) {
-  const targetElement = document.getElementById(elementId);
+  const element = document.getElementById(elementId);
 
-  let offset = 0;
-
-  if (elementId === 'login-form' || targetElement === 'signup-form') {
-    offset = 0;
+  if (element) {
+      // Scroll to the element
+      element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+      });
   } else {
-    offset = 300;
-  }
-
-  if (targetElement) {
-    const scrollOptions = {
-      behavior: 'smooth'
-    };
-
-    const viewportHeight = window.innerHeight;
-
-    const elementRect = targetElement.getBoundingClientRect();
-    const elementTop = elementRect.top;
-
-    let scrollToPosition;
-
-    if (elementTop > 0) {
-      scrollToPosition = elementTop + window.scrollY - viewportHeight / 2 + elementRect.height / 2 + offset;
-    } else {
-      scrollToPosition = elementTop + window.scrollY - viewportHeight / 2 + elementRect.height / 2 + offset * 3;
-    }
-
-    window.scrollTo({ ...scrollOptions, top: scrollToPosition });
+      console.error(`Element with ID '${elementId}' not found.`);
   }
 }
 
@@ -360,6 +343,7 @@ function updateLoginButtons() {
       } else {
         loginBtn.style.display = 'block'; // Show "Log In" button
         signupBtn.style.display = 'block'; // Show "Sign Up" button
+        signoutBtn.style.display = 'none'
         dashboardBtn.style.display = 'none';
 
         const stateObj = { foo: 'updated' };
