@@ -10,13 +10,13 @@ function scrollToElement(elementId) {
   const element = document.getElementById(elementId);
 
   if (element) {
-      // Scroll to the element
-      element.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-      });
+    // Scroll to the element
+    element.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
   } else {
-      console.error(`Element with ID '${elementId}' not found.`);
+    console.error(`Element with ID '${elementId}' not found.`);
   }
 }
 
@@ -333,7 +333,7 @@ function createLogoutButton(id) {
   dashboardBtn.id = 'dashboardBtn';
   dashboardBtn.className = 'header-section';
   dashboardBtn.onclick = function () {
-    location.href = '/dashboard?objectid=' + id;
+    location.href = '/dashboard.html?objectid=' + id;
   };
   // Append the "Log Out" button to the header
   const headerSections = document.querySelector('.header-sections');
