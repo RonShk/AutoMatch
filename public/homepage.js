@@ -337,6 +337,8 @@ let shouldReload = true; // Initialize the flag
 function updateLoginButtons() {
   const loginBtn = document.getElementById('loginBtn');
   const signupBtn = document.getElementById('signupBtn');
+  const signoutBtn = document.getElementById('signoutBtn');
+  const dashboardBtn = document.getElementById('dashboardBtn');
 
   // Send a request to the server to check if the user is logged in
   fetch('/check-login-status')
@@ -347,6 +349,7 @@ function updateLoginButtons() {
       if (isLoggedIn) {
         loginBtn.style.display = 'none'; // Hide "Log In" button
         signupBtn.style.display = 'none'; // Hide "Sign Up" button
+        dashboardBtn.style.display = 'block';
 
         const stateObj = { foo: 'updated' };
         const title = 'Updated Page Title';
@@ -357,6 +360,8 @@ function updateLoginButtons() {
       } else {
         loginBtn.style.display = 'block'; // Show "Log In" button
         signupBtn.style.display = 'block'; // Show "Sign Up" button
+        dashboardBtn.style.display = 'none';
+
         const stateObj = { foo: 'updated' };
         const title = 'Updated Page Title';
         const updatedUrl = `/`;
