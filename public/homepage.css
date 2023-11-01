@@ -4,11 +4,6 @@
   font-family: 'Poppins', sans-serif;
 }
 
-:root {
-  --blue-color: #2b61d4;
-  --gold-color: #ffd132;
-}
-
 .overlay {
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 15;
@@ -26,7 +21,7 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url(https://i.postimg.cc/G2s45Pnq/imageedit-2-2058575291.png);
+  background-image: linear-gradient(rgba(235, 229, 223, 0.35), rgba(239, 228, 217, 0.85)), url(https://i.postimg.cc/G2s45Pnq/imageedit-2-2058575291.png);
   background-repeat: no-repeat;
   background-size: cover;
   z-index: -1;
@@ -42,7 +37,6 @@ body {
 header {
   width: 48.5vw;
   height: auto;
-  background-color: rgba(233, 231, 231, 1);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -53,6 +47,7 @@ header {
   border-radius: 15px;
   top: 10px;
   z-index: 1;
+  background: linear-gradient(to right, #345b85, #324f6f);
 }
 
 .header-sections {
@@ -65,7 +60,7 @@ header {
 .header-title {
   margin: 0;
   margin-left: 12px;
-  color: #000000;
+  color: #ede7e1;
   font-size: 1.4em;
   font-family: 'Alata', sans-serif;
   margin-right: auto;
@@ -79,7 +74,7 @@ header {
 
 .header-sections a {
   margin-left: 3.15em;
-  color: #000000;
+  color: #ede7e1;
   text-decoration: none;
   font-size: 1.1em;
   font-family: 'Alata', sans-serif;
@@ -88,7 +83,7 @@ header {
 .header-sections a:not(.disabled):hover,
 .header-title:not(.disabled):hover {
   text-shadow: 0 1.5px 2px rgba(39, 63, 122, 0.5);
-  color: #3a83bb;
+  color: #F5F5F5;
   cursor: pointer;
   transition: all 0.05s ease-in-out;
 }
@@ -99,7 +94,7 @@ header {
 }
 
 #signupBtn, #logoutBtn {
-  background-color: #ffffffb4;
+  background-color: #ede7e1;
   border: 0 solid #e2e8f0;
   border-radius: 1.5rem;
   box-sizing: border-box;
@@ -120,9 +115,8 @@ header {
 }
 
 #signupBtn:not(.disabled):hover {
-  background-color: #3a83bb;
-  color: #fff;
-  box-shadow: 0 1.5px 4px rgba(39, 63, 122, 0.5);
+  background-color: #F5F5F5;
+  color: #345b85;
   cursor: pointer;
 }
 
@@ -175,28 +169,45 @@ header {
   letter-spacing: 0.06em;
   font-family: 'Alata', sans-serif;
   margin-top: 150px;
-  margin-bottom: 55px;
+  color: #345b85;
 }
 
 .homepage-subtitle {
   text-align: center;
   font-size: 33px;
+  color: #303030;
 }
 
-.homepage-header {
+#homepage-sectionTitle {
   text-align: center;
-  font-size: 22px;
+  font-size: 26px;
+  color: #303030;
 }
 
-.homepage-paragraph {
+.homepage-paragraph, .homepage-paragraph-final {
   margin: 0 auto;
   margin-left: 100px;
   margin-right: 100px;
   text-align: justify;
   font-size: 20px;
   line-height: 2em;
-  margin-bottom: 300px;
+  color: #303030;
+  margin-bottom: 40px;
 }
+
+.homepage-paragraph-final {
+  margin-bottom: 240px;
+}
+
+.homepage-description {
+  margin: 0 auto;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bolder;
+  color: #303030;
+  margin-bottom: 80px;
+}
+
 
 /* .homepage-image {
   margin: 0 auto;
@@ -217,8 +228,8 @@ header {
 
 .submitBtn {
   appearance: none;
-  background-color: transparent;
-  border: 2px solid #1a1a1a;
+  background-color: #fff;
+  border: 0px solid #1a1a1a;
   border-radius: 10px;
   box-sizing: border-box;
   color: #3b3b3b;
@@ -257,7 +268,7 @@ header {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #fff;
+  background: #ebe8e5;
   padding: 5px;
   z-index: 1;
   border-radius: 15px;
@@ -269,6 +280,9 @@ input {
   width: 100%;
   border-bottom: 1px solid rgb(30, 30, 30);
   margin-bottom: 10px;
+  background: none;
+  color: #303030;
+
 }
 
 input[type='checkbox'] {
@@ -297,7 +311,7 @@ input[type='checkbox'] {
 }
 
 #login-exitbtn button:hover {
-  background: rgba(102, 102, 102, 0.15);
+  background: rgba(255, 255, 255, 0.25);
   border-radius: 5px;
   text-shadow: 0 1.5px 2px rgba(0, 0, 0, 0.5);
 }
@@ -312,7 +326,7 @@ input[type='checkbox'] {
 }
 
 .login-window-content {
-  background-color: #fefefe;
+  background-color: #ebe8e5;
   margin: 5% auto;
   padding: 20px;
   padding-bottom: 200px;
