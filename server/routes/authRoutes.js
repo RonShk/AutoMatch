@@ -7,7 +7,7 @@ const { sendConfirmation, hashStringToBase64 } = require('../../helperFunctions'
 const { connectToDB } = require('../db'); // Assuming you've moved DB connection logic to db.js
 
 // Move the relevant route handlers from server.js to here
-router.post('/join-button-form', async (req, res) => {
+router.post('/signup', async (req, res) => {
   try {
     const { db, client } = await connectToDB();
     const pendingUserCollection = db.collection('pendingUsers');
@@ -82,16 +82,16 @@ router.get('/confirm/user', async (req, res) => {
 
       // console.log('Everything worked correctly in making the user and adding to the database');
     } else {
-      res.status(500).sendFile(__dirname + '/addedUsersPage.html');
+      res.status(500).sendFile(__dirname, '..', '..','failedUserSignup.html');
       // console.log('Deleted count was not 1 ');
     }
   } catch (err) {
     console.error(err);
-    res.status(500).sendFile(__dirname + '/addedUsersPage.html');
+    res.status(500).sendFile(__dirname, '..', '..','failedUserSignup.html');
   }
 });
 
-router.post('/login-form', async (req, res) => {
+router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
