@@ -208,7 +208,7 @@ function signUpSubmission(name, email, password) {
   };
 
   // Send the data to the server using the Fetch API
-  fetch('/join-button-form', {
+  fetch('/signup', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -275,7 +275,7 @@ function loginSubmission(email, password) {
     password: password
   };
 
-  fetch('/login-form', {
+  fetch('/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
