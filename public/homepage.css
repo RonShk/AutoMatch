@@ -40,7 +40,7 @@ body {
 /* Header */
 
 header {
-  width: 45vw;
+  width: 48.5vw;
   height: auto;
   background-color: rgba(233, 231, 231, 1);
   display: flex;
@@ -64,12 +64,14 @@ header {
 
 .header-title {
   margin: 0;
+  margin-left: 12px;
   color: #000000;
   font-size: 1.4em;
   font-family: 'Alata', sans-serif;
   margin-right: auto;
   transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 
 #title {
   text-decoration: none;
