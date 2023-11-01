@@ -9,11 +9,13 @@ async function sendConfirmation(userEmail, objectID) {
     }
   });
 
+  const confirmationLink = `http://localhost:8080/confirm/user?objectid=${objectID}`;
   const details = {
     from: 'ronshaked07@gmail.com',
     to: userEmail,
     subject: 'Confirmation Email',
-    text: `Click here to confirm your account: http://localhost:8080/confirm/user?objectid=${objectID}`
+    text: `Click the link below to confirm your account:\n${confirmationLink}`,
+    html: `Click the link below to confirm your account:<br><a href="${confirmationLink}">Confirm your account</a>`
   };
 
   transporter.sendMail(details, (error, info) => {
