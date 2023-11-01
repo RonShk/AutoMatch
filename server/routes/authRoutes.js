@@ -1,5 +1,6 @@
 // authRoutes.js
 const express = require('express');
+const bcrypt = require('bcrypt');
 const router = express.Router();
 const { MongoClient, ObjectId } = require('mongodb');
 const { sendConfirmation, hashStringToBase64 } = require('../../helperFunctions');
@@ -14,6 +15,9 @@ router.post('/join-button-form', async (req, res) => {
 
     const { name, email, password } = req.body;
     // console.log(name, email, password);
+    const saltRounds = 12;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
 
     const user = await usersCollection.findOne({ email: email });
 
@@ -23,7 +27,7 @@ router.post('/join-button-form', async (req, res) => {
       return; // Exit the function to prevent further execution
     }
 
-    const hashedPassword = await hashStringToBase64(password);
+
     // console.log(`HashedPassword: ${hashedPassword}`);
 
     const pendingUser = {
@@ -101,9 +105,10 @@ router.post('/login-form', async (req, res) => {
       return;
     }
 
-    const hashedInputPassword = await hashStringToBase64(password);
+    const isValid = await bcrypt.compare(password, userInfo.password);
+    console.log(isValid);
 
-    if (userInfo.password === hashedInputPassword) {
+    if (isValid) {
       // Create a session and store user information in the session
       req.session.user = {
         id: userInfo._id, // Assuming you have a unique user ID
