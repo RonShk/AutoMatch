@@ -5,7 +5,7 @@
 __Code Styling:__
 - Variable Naming: Camel Case
 - Function Naming: Camel Case
-- Quotation Marks: Backtick (`)
+- Quotation Marks: Backtick (`) when embedding variables otherwise single quotes ('')
 - Comments (separate sections of code)
  
 __File System:__

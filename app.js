@@ -4,6 +4,8 @@ const authRoutes = require('./server/routes/authRoutes');
 const searchRoutes = require('./server/routes/searchRoutes');
 const pageRoutes = require('./server/routes/pageRoutes');
 const bodyParser = require('body-parser'); // Import body-parser
+const path = require('path');
+
 
 // ... other imports ...
 
@@ -13,7 +15,8 @@ const port = 8080;
 // Use the session middleware
 app.use(sessionMiddleware);
 app.use(checkUserAuthentication); // This will apply it to all routes
-app.use(express.static('public'));
+//app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 // Parse application/json
 app.use(bodyParser.json());
