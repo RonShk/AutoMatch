@@ -2,18 +2,20 @@ const nodemailer = require('nodemailer'); //Sending Email Conformations and car 
 
 async function sendConfirmation(userEmail, objectID) {
   let transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.office365.com',
+    port: 587,
+    secure: false, // Set to true if you want to use TLS (not recommended for port 587)
     auth: {
-      user: 'ronshaked07@gmail.com',
-      pass: 'sknf irxh yhaa uhjq'
-    }
+      user: 'donotreply@automatch.dev', // Your custom email address
+      pass: 'e8$6rRgQVd#4tF2', // Your Microsoft 365 email password
+    },
   });
-
+  
   const details = {
-    from: 'ronshaked07@gmail.com',
+    from: 'donotreply@automatch.dev', // Your custom email address
     to: userEmail,
-    subject: 'Confirmation Email',
-    text: `Click here to confirm your account: http://localhost:8080/confirm/user?objectid=${objectID}`
+    subject: 'AutoMatch - Verify your Account',
+    text: `Click here to verify your account: http://localhost:8080/confirm/user?objectid=${objectID}`
   };
 
   transporter.sendMail(details, (error, info) => {
