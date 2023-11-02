@@ -6,7 +6,7 @@
     <title>Document</title>
   </head>
   <body>
-    <form action="/user-searchs" method="post">
+    <form action="/user-searches" method="post">
       <label for="make">Make:</label>
       <input type="text" id="make" name="make" />
       <br />
@@ -25,14 +25,32 @@
 
       <label for="minPrice">Minimum Price</label>
       <input type="text" id="minPrice" name="minPrice" />
+      <br />
 
       <label for="maxPrice">Maximum Price</label>
       <input type="text" id="maxPrice" name="maxPrice" />
+      <br />
 
       <button type="submit" id="searchSubmit">Search</button>
     </form>
     <div id="searchDiv"></div>
-    <div id="tableDiv"></div>
+    <table id="search-table">
+      <thead>
+        <tr>
+          <th>Make</th>
+          <th>Model</th>
+          <th>Min Year</th>
+          <th>Max Year</th>
+          <th>Min Price</th>
+          <th>Max Price</th>
+          <th>Delete</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody id="search-table-body">
+        <!-- Search results will go here -->
+      </tbody>
+    </table>
 
     <script src="/clientJavascript/dashboard.js"></script>
   </body>

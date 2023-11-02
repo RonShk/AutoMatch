@@ -46,39 +46,55 @@ router.post('/user-searches', async (req, res) => {
 });
 
 router.get('/user-previous-searches', async (req, res) => {
-  const objectid = req.query.objectid; // Get the objectid from the query string
+  try {
+    const objectid = req.query.objectid;
 
-  // Fetch search results from the database based on the provided objectid
-  const searchResults = await fetchUserSearches(objectid); // Implement this function
+    // Validate the objectid (you need to implement isValidObjectId)
+    if (!isValidObjectId(objectid)) {
+      return res.status(400).json({ message: "Invalid object ID" });
+    }
 
-  res.json(searchResults);
+    // Fetch search results from the database
+    const searchResults = await fetchUserSearches(objectid);
+    res.json(searchResults);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
+
+// Implement this function to check if the ObjectId is valid
+function isValidObjectId(id) {
+  return ObjectId.isValid(id);
+}
 
 router.delete('/delete-search', async (req, res) => {
   try {
-    const objectID = req.body.objectID; // Retrieve the objectID as a string
-    const objectIdToQuery = new ObjectId(objectID);
+    const { objectID } = req.body; // Extract the objectID from the request body
 
-    if (!objectID) {
-      res.status(400).send('Invalid objectID');
-      return;
+    // Validate the objectID here if necessary
+    if (!ObjectId.isValid(objectID)) {
+      return res.status(400).send("Invalid ID format");
     }
 
-    const { db, client } = await connectToDB();
-    const searchCollection = db.collection('userSearches');
+    const { db } = await connectToDB(); // Ensure you have a function to connect to your database
+    const userSearchCollection = db.collection('userSearches'); // Replace with your actual collection name
 
-    const deleteResult = await searchCollection.deleteOne({ _id: objectIdToQuery });
+    // Perform the deletion
+    const result = await userSearchCollection.deleteOne({ _id: new ObjectId(objectID) });
 
-    if (deleteResult.deletedCount === 1) {
-      res.sendStatus(200);
+    // Check if the search was actually found and deleted
+    if (result.deletedCount === 1) {
+      res.status(200).send("Search deleted successfully");
     } else {
-      res.status(404).send('Search not found');
+      res.status(404).send("Search not found");
     }
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error deleting search');
+    console.error("Delete search error:", error);
+    res.status(500).send("Internal server error");
   }
 });
+
 
 // Export the router
 module.exports = router;

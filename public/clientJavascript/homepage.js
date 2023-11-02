@@ -1,6 +1,4 @@
 // Handle toggling of login/signup forms
-let loginForm = document.getElementById('login-form');
-let signupForm = document.getElementById('signup-form');
 let fieldIssuesSignUpDiv = document.getElementById('fieldIssuesSignUp');
 let fieldIssuesLoginDiv = document.getElementById('fieldIssuesLoginDiv');
 
@@ -363,6 +361,7 @@ function updateLoginButtons() {
         const title = 'Updated Page Title';
         const updatedUrl = `/?objectid=${id}`;
         window.history.replaceState(stateObj, title, updatedUrl);
+        dashboardBtn.href = `/dashboard?objectid=${data.id}`;
 
         createLogoutButton(id); // Create and append "Log Out" button
       } else {
