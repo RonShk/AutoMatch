@@ -67,15 +67,17 @@ router.get('/confirm/user', async (req, res) => {
     const pendingUser = await pendingUserCollection.findOne({
       _id: objectIdToQuery
     });
+    const email = pendingUser.email;
     const user = await userCollection.insertOne(pendingUser);
     const deletePendingUser = await pendingUserCollection.deleteOne({
       _id: objectIdToQuery
     });
 
+
     if (deletePendingUser.deletedCount === 1) {
       req.session.user = {
-        id: user._id, // Assuming you have a unique user ID
-        email: user.email
+        id: user.insertedId.toString(), // Assuming you have a unique user ID
+        email
         // Add other user-related data as needed
       };
       res.status(200).redirect('/');
