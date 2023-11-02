@@ -1,21 +1,24 @@
-const nodemailer = require('nodemailer'); //Sending Email Conformations and car updates
-
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 async function sendConfirmation(userEmail, objectID) {
   let transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.office365.com',
+    port: 587,
+    secure: false,
     auth: {
-      user: 'ronshaked07@gmail.com',
-      pass: 'sknf irxh yhaa uhjq'
-    }
+      user: 'DoNotReply@automatch.dev', 
+      pass: 'tqscqxmpmllnlspd',
+    },
   });
 
-  const confirmationLink = `http://localhost:8080/confirm/user?objectid=${objectID}`;
+  const verifyLink = `http://localhost:8080/confirm/user?objectid=${objectID}`;
+
   const details = {
-    from: 'ronshaked07@gmail.com',
+    from: 'DoNotReply@automatch.dev',
     to: userEmail,
-    subject: 'Confirmation Email',
-    text: `Click the link below to confirm your account:\n${confirmationLink}`,
-    html: `Click the link below to confirm your account:<br><a href="${confirmationLink}">Confirm your account</a>`
+    subject: 'AutoMatch - Verify your Account',
+    text: `Click the link below to confirm your account:\n${verifyLink}`,
+    html: `Click the link below to confirm your account:<br><a href="${verifyLink}">Confirm your account</a>`
   };
 
   transporter.sendMail(details, (error, info) => {
@@ -28,14 +31,11 @@ async function sendConfirmation(userEmail, objectID) {
 }
 
 async function hashStringToBase64(input) {
-  // Convert the input string to an ArrayBuffer
   const encoder = new TextEncoder();
   const data = encoder.encode(input);
 
-  // Use the SubtleCrypto API to create a hash
   const hashBuffer = await crypto.subtle.digest('SHA-256', data);
 
-  // Convert the hash result to a Base64 string
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   const hashBase64 = btoa(String.fromCharCode(...hashArray));
 
