@@ -11,7 +11,7 @@ async function fetchUserSearches(objectid) {
   const searchCollection = db.collection('userSearches');
 
   // Query the database to find searches with a matching searchID (objectid)
-  const searchResults = await searchCollection.find({ searchID: objectid }).toArray();
+  const searchResults = await searchCollection.find({ userObjectid: objectid }).toArray();
 
   return searchResults;
 }
@@ -24,7 +24,7 @@ router.post('/user-searches', async (req, res) => {
     const searchCollection = db.collection('userSearches');
 
     const searchItem = {
-      searchID: objectid,
+      userObjectid: objectid,
       make,
       model,
       minYear,
