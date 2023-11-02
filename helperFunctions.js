@@ -1,21 +1,34 @@
 const nodemailer = require('nodemailer'); //Sending Email Conformations and car updates
-
+const crypto = require('crypto');
 async function sendConfirmation(userEmail, objectID) {
+  // let transporter = nodemailer.createTransport({
+  //   host: 'smtp.office365.com',
+  //   port: 587,
+  //   secure: false, 
+  //   auth: {
+  //     user: 'DoNotReply@automatch.dev', // Your custom email address
+  //     pass: 'xddkwxxmxzwbfdt', // Your Microsoft 365 email password
+  //   },
+  // });
+
   let transporter = nodemailer.createTransport({
     host: 'smtp.office365.com',
     port: 587,
-    secure: false, // Set to true if you want to use TLS (not recommended for port 587)
+    secure: false,
     auth: {
-      user: 'donotreply@automatch.dev', // Your custom email address
-      pass: 'e8$6rRgQVd#4tF2', // Your Microsoft 365 email password
+      user: 'DoNotReply@automatch.dev', // Your custom email address
+      pass: 'tqscqxmpmllnlspd', // Use the app password you generated
     },
   });
-  
+
+  const verifyLink = `http://localhost:8080/confirm/user?objectid=${objectID}`;
+
   const details = {
-    from: 'donotreply@automatch.dev', // Your custom email address
+    from: 'DoNotReply@automatch.dev', // Your custom email address
     to: userEmail,
     subject: 'AutoMatch - Verify your Account',
-    text: `Click here to verify your account: http://localhost:8080/confirm/user?objectid=${objectID}`
+    text: `Click the link below to confirm your account:\n${verifyLink}`,
+    html: `Click the link below to confirm your account:<br><a href="${verifyLink}">Confirm your account</a>`
   };
 
   transporter.sendMail(details, (error, info) => {
