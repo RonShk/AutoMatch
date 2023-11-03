@@ -20,6 +20,12 @@ router.post('/user-searches', async (req, res) => {
   try {
     const { make, model, minYear, maxYear, minPrice, maxPrice, objectid } = req.body;
 
+    // Calculate the next scrape time, which is 6 hours from now
+    // This is just an example, adjust the time according to your needs
+    const now = new Date();
+    const fourMinutesLater = new Date(now.getTime() + 4 * 60 * 1000);
+
+
     const { db, client } = await connectToDB();
     const searchCollection = db.collection('userSearches');
 
@@ -30,7 +36,8 @@ router.post('/user-searches', async (req, res) => {
       minYear,
       maxYear,
       minPrice,
-      maxPrice
+      maxPrice,
+      nextScrapeAt: fourMinutesLater
     };
 
     const result = await searchCollection.insertOne(searchItem);
@@ -41,9 +48,11 @@ router.post('/user-searches', async (req, res) => {
       res.sendStatus(500);
     }
   } catch (error) {
+    console.error(error);
     res.sendStatus(500);
   }
 });
+
 
 router.get('/user-previous-searches', async (req, res) => {
   try {
