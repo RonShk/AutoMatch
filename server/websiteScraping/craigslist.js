@@ -1,34 +1,49 @@
 const puppeteer = require('puppeteer');
 const { connectToDB } = require('../db'); // Assuming you've moved DB connection logic to db.js
 
-async function fetchScrapeResults(objectid) {
-	const searches = await fetchUserSearches(objectid);
+async function fetchScrapeResults() {
+	const searches = await fetchUserSearches();
 	const listingData = await performSearchScrapingLoop(searches);
-}
-
-async function fetchUserSearches(objectid) {
-	try{
-		const { db } = await connectToDB();
-		const searchCollection = db.collection('userSearches');
-	
-		// Query the database to find searches with a matching searchID (objectid)
-		const searchResults = await searchCollection.find({ userObjectid: objectid }).toArray();
-	
-		return searchResults;
+  }
+  
+async function fetchUserSearches() {
+	try {
+	  const { db } = await connectToDB();
+	  const searchCollection = db.collection('userSearches');
+	  
+	  // Get the current time
+	  const now = new Date();
+	  
+	  // Find searches where the nextScrapeAt time is in the past
+	  const searchResults = await searchCollection.find({
+		nextScrapeAt: { $lte: now }
+	  }).toArray();
+	  
+	  // Update the nextScrapeAt time for the searches that are being scraped
+	  for (const search of searchResults) {
+		const fourMinutesLater = new Date(now.getTime() + 4 * 60 * 1000);
+		await searchCollection.updateOne(
+		  { _id: search._id },
+		  { $set: { nextScrapeAt: fourMinutesLater } }
+		);
+	  }
+	  
+	  return searchResults;
 	} catch (error) {
-		console.error(error);
+	  console.error(error);
 	}
-}
-
-async function performSearchScrapingLoop(searches) { 
-	searches.array.forEach(search => {
-		scrapeCraigslist(search);
-	});
-}
+  }
+  
+  async function performSearchScrapingLoop(searches) {
+	// Use Promise.all to wait for all scrapes to complete
+	await Promise.all(searches.map(search => scrapeCraigslist(search)));
+  }
+  
 
 async function scrapeCraigslist(searchObject) {
   // Destructure the searchObject to get the relevant fields
-  const { make, model, minYear, maxYear, minPrice, maxPrice } = searchObject;
+  const { make, model, minYear, maxYear, minPrice, maxPrice, userObjectid } = searchObject;
+  console.log("Scraping");
 
   // Construct the query by combining make and model
   const query = `${make} ${model}`;
@@ -50,13 +65,14 @@ async function scrapeCraigslist(searchObject) {
 		// Fetch all URLs first
 		const urls = await page.$$eval('.gallery-card a.main', links => links.map(a => a.href));
 
-		let allListings = [];
-
 		for (const url of urls) {
 		  await page.goto(url, { waitUntil: 'networkidle0' });
 		
 		  const attrGroups = await page.$$('.mapAndAttrs .attrgroup');
-		  let listingObj = {};
+
+		  let listingObj = {
+			userObjectid, // Include userObjectid in the listing object
+			};			
 		
 		  for (let i = 0; i < attrGroups.length; i++) {
 			const text = await (await attrGroups[i].getProperty('textContent')).jsonValue();
@@ -71,10 +87,10 @@ async function scrapeCraigslist(searchObject) {
 		  }
 
 		
-		  allListings.push(listingObj);
+		  addListingDB(listingObj);
 		}
 		
-		console.log(allListings);
+		console.log('done');
 
 	} catch (error) {
 		console.error('Scraping failed:', error);
@@ -83,3 +99,16 @@ async function scrapeCraigslist(searchObject) {
 	}
 }
 
+async function addListingDB(listing) {
+	try {
+
+		const { db, client } = await connectToDB();
+		const listingCollection = await db.collection('listings');
+
+		const listingData = await listingCollection.insertOne(listing);
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+module.exports = { fetchScrapeResults };

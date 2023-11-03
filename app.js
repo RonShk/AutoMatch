@@ -5,9 +5,12 @@ const searchRoutes = require('./server/routes/searchRoutes');
 const pageRoutes = require('./server/routes/pageRoutes');
 const bodyParser = require('body-parser'); // Import body-parser
 const path = require('path');
+const { startScheduler } = require('./server/scheduler');
 
 
-// ... other imports ...
+const twoMinutes = 2 * 60 * 1000; // 2 minutes in milliseconds
+
+
 
 const app = express();
 const port = 8080;
@@ -32,4 +35,15 @@ app.use(pageRoutes)
 
 // ... other app.use() calls ...
 
-app.listen(port, () => console.log(`Successfully running on Port: ${port}`));
+app.listen(port, () => {
+	const currentTime = new Date();
+	const hours = currentTime.getHours() % 12 || 12; // Convert 0 (midnight) to 12
+	const minutes = currentTime.getMinutes().toString().padStart(2, '0');
+	const seconds = currentTime.getSeconds().toString().padStart(2, '0');
+	const ampm = currentTime.getHours() >= 12 ? 'PM' : 'AM';
+	console.log(`Successfully running on Port: ${port} - Server started at ${hours}:${minutes}:${seconds} ${ampm}`);
+	startScheduler();
+
+});
+
+  
