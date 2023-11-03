@@ -1,6 +1,9 @@
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
-async function sendConfirmation(userEmail, objectID) {
+const fs = require('fs');
+const path = require('path');
+
+async function sendConfirmation(userEmail, name, objectID) {
   let transporter = nodemailer.createTransport({
     host: 'smtp.office365.com',
     port: 587,
@@ -12,13 +15,24 @@ async function sendConfirmation(userEmail, objectID) {
   });
 
   const verifyLink = `http://localhost:8080/confirm/user?objectid=${objectID}`;
+  
+  function capitalizeFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  }
+  
+  const userName = capitalizeFirstLetter(name);
+
+
+  const htmlTemplatePath = path.join(__dirname, 'HTML', 'confirmationEmail.html');
+  const htmlTemplate = fs.readFileSync(htmlTemplatePath, 'utf-8');
+  const htmlContent = htmlTemplate.replace(/{{objectID}}/g, verifyLink)
+  .replace(/{{username}}/g, userName);
 
   const details = {
-    from: 'DoNotReply@automatch.dev',
+    from: 'AutoMatch <donotreply@automatch.dev>',
     to: userEmail,
     subject: 'AutoMatch - Verify your Account',
-    text: `Click the link below to confirm your account:\n${verifyLink}`,
-    html: `Click the link below to confirm your account:<br><a href="${verifyLink}">Confirm your account</a>`
+    html: htmlContent,
   };
 
   transporter.sendMail(details, (error, info) => {

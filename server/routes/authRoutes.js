@@ -42,13 +42,16 @@ router.post('/signup', async (req, res) => {
     });
 
     if (inputtedPendingUser) {
-      sendConfirmation(email, result.insertedId).catch(error => {
-        res.sendStatus(500);
-        return; // Exit the function on error
-      });
+      sendConfirmation(email, name, result.insertedId)
+        .then(() => {
+          res.sendStatus(200); 
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    } else {
+      res.sendStatus(400); 
     }
-
-    res.sendStatus(200);
   } catch (error) {
     console.error(error);
     res.sendStatus(400);
