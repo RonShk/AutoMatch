@@ -7,7 +7,7 @@ __Code Styling:__
 - Function Naming: Camel Case
 - Quotation Marks: Backtick (`) when embedding variables otherwise single quotes ('')
 - Comments (separate sections of code)
-- API endpoints; Dashes
+- API endpoints; '/' in between any thing that is not a singular word meaning it should not be /forgotPassword or /forgot-password it should be /forgot/password
  
 __File System:__
 - Public
