@@ -3,7 +3,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const router = express.Router();
 const { MongoClient, ObjectId } = require('mongodb');
-const { sendConfirmation, hashStringToBase64 } = require('../../helperFunctions');
+const { sendConfirmation, hashStringToBase64, sendForgotPasswordEmail } = require('../../helperFunctions');
 const { connectToDB } = require('../db'); // Assuming you've moved DB connection logic to db.js
 
 // Move the relevant route handlers from server.js to here
@@ -153,6 +153,48 @@ router.get('/check-login-status', (req, res) => {
   }
 
   res.json({ isLoggedIn });
+});
+
+
+router.post('/forgot/password/submit', async (req, res) => {
+  const { email } = req.body;
+  const { db } = await connectToDB();
+  const userCollection = db.collection('users');
+
+  const user = await userCollection.findOne({ email: email });
+
+  if (!user) {
+    res.sendStatus(404);
+    return;
+  }
+
+  try {
+    await sendForgotPasswordEmail(email, user.name, user._id);
+    res.sendStatus(200);
+  } catch (error) {
+    res.sendStatus(200);
+  }
+});
+
+router.post('/reset/password/submit', async (req, res) => {
+  try {
+    const { newPassword, objectId } = req.body;
+    const { db, client } = await connectToDB();
+    const userCollection = db.collection('users')
+
+    const saltRounds = 8;
+    const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+
+    const filter = { _id: new ObjectId(objectId) };
+    const updateDoc = { $set: { password: hashedPassword }};
+    const result = await userCollection.updateOne(filter, updateDoc);
+
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(501);
+  }
 });
 
 // Export the router

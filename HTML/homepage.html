@@ -69,12 +69,28 @@
             Don't have an account?
             <a class="switchType" onclick="openSignUp()">Sign Up</a>
           </h3>
+          <a class="switchType" id="forgotPasswordLink" onclick="openForgotPasswordPane()">Forgot Password</a>
           <div id="fieldIssuesLoginDiv"></div>
         </form>
 
         <div id="verifyPopup">
           <h3>Please check your email to complete verifying your account. You should recieve a link shortly.</h3>
           <h5>This tab can be safely closed.</h5>
+        </div>
+
+        <div id="forgotPasswordVerifyPopup">
+          <h3>Password Reset</h3>
+          <h5>Please check your email for a link to reset your password</h5>
+        </div>
+        <div id="forgotPasswordPopup">
+          <h3>Reset password</h3>
+          <h5>Enter your email address and we'll send you a link to reset your password.</h5>
+          <form id="forgot-password-form" method="post">
+            <input id="forgot-password-email" class="forgot-password-input" type="email" placeholder="Email" required />
+            <button id="forgot-password-submit" type="submit" class="submitBtn">Reset My Password</button>
+
+            <div id="fieldIssuesForgotPassword"></div>
+          </form>
         </div>
       </div>
     </div>

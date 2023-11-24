@@ -16,10 +16,6 @@ async function sendConfirmation(userEmail, name, objectID) {
 
   const verifyLink = `http://localhost:8080/confirm/user?objectid=${objectID}`;
   
-  function capitalizeFirstLetter(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-  }
-  
   const userName = capitalizeFirstLetter(name);
 
 
@@ -32,6 +28,47 @@ async function sendConfirmation(userEmail, name, objectID) {
     from: 'AutoMatch <donotreply@automatch.dev>',
     to: userEmail,
     subject: 'AutoMatch - Verify your Account',
+    html: htmlContent,
+  };
+
+  transporter.sendMail(details, (error, info) => {
+    if (error) {
+      console.error(error);
+    } else {
+      console.log('Email Sent:', info.response);
+    }
+  });
+}
+
+function capitalizeFirstLetter(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
+async function sendForgotPasswordEmail(userEmail, name, userObjectID) {
+  let transporter = nodemailer.createTransport({
+    host: 'smtp.office365.com',
+    port: 587,
+    secure: false,
+    auth: {
+      user: 'DoNotReply@automatch.dev', 
+      pass: 'tqscqxmpmllnlspd',
+    },
+  });
+
+  const verifyLink = `http://localhost:8080/reset/password/page?objectid=${userObjectID}`;
+  
+  const userName = capitalizeFirstLetter(name);
+
+
+  const htmlTemplatePath = path.join(__dirname, 'HTML', 'forgotPasswordEmail.html');
+  const htmlTemplate = fs.readFileSync(htmlTemplatePath, 'utf-8');
+  const htmlContent = htmlTemplate.replace(/{{link}}/g, verifyLink)
+  .replace(/{{username}}/g, userName);
+
+  const details = {
+    from: 'AutoMatch <donotreply@automatch.dev>',
+    to: userEmail,
+    subject: 'AutoMatch - Reset your Password',
     html: htmlContent,
   };
 
@@ -78,5 +115,6 @@ function checkUserAuthentication(req, res, next) {
 module.exports = {
   sendConfirmation,
   hashStringToBase64,
-  checkUserAuthentication
+  checkUserAuthentication,
+  sendForgotPasswordEmail
 };
