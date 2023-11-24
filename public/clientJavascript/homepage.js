@@ -30,6 +30,12 @@ window.addEventListener('DOMContentLoaded',()=>{
 let fieldIssuesSignUpDiv = document.getElementById('fieldIssuesSignUp');
 let fieldIssuesLoginDiv = document.getElementById('fieldIssuesLoginDiv');
 
+//handling of forgot password
+let forgotPasswordLink = document.getElementById('forgotPasswordLink');
+let forgotPasswordSubmitBtn = document.getElementById('forgot-password-submit');
+let forgotPasswordVerifyPopup = document.getElementById('forgotPasswordVerifyPopup');
+let forgotPasswordFieldIssuesDiv =  document.getElementById('fieldIssuesForgotPassword');
+
 let currentSection = 'about'; // Initialize the current section
 
 function scrollToElement(elementId) {
@@ -162,6 +168,8 @@ function openLogin() {
   document.getElementById('login-form').style.display = 'block';
   document.getElementById('signup-form').style.display = 'none';
   document.getElementById('verifyPopup').style.display = 'none';
+  document.getElementById('forgotPasswordPopup').style.display = 'none';
+  document.getElementById('forgotPasswordVerifyPopup').style.display = 'none';
 
   const scrollTop = window.scrollY || document.documentElement.scrollTop;
   document.getElementsByClassName('login-window')[0].style.top = scrollTop + window.innerHeight / 2 + 'px';
@@ -177,6 +185,8 @@ function openSignUp() {
   document.getElementById('login-form').style.display = 'none';
   document.getElementById('signup-form').style.display = 'block';
   document.getElementById('verifyPopup').style.display = 'none';
+  document.getElementById('forgotPasswordPopup').style.display = 'none';
+  document.getElementById('forgotPasswordVerifyPopup').style.display = 'none';
 
   const scrollTop = window.scrollY || document.documentElement.scrollTop;
   document.getElementsByClassName('login-window')[0].style.top = scrollTop + window.innerHeight / 2 + 'px';
@@ -274,7 +284,69 @@ function openVerifyPane() {
   document.getElementById('login-form').style.display = 'none';
   document.getElementById('signup-form').style.display = 'none';
   document.getElementById('verifyPopup').style.display = 'block';
+  document.getElementById('forgotPasswordPopup').style.display = 'none';
+  document.getElementById('forgotPasswordVerifyPopup').style.display = 'none';
+
 }
+
+function openForgotPasswordPane() {
+  document.getElementById('login-form').style.display = 'none';
+  document.getElementById('signup-form').style.display = 'none';
+  document.getElementById('verifyPopup').style.display = 'none';
+  document.getElementById('forgotPasswordPopup').style.display = 'block';
+  document.getElementById('forgotPasswordVerifyPopup').style.display = 'none';
+}
+
+function openForgotPasswordVerifyPane() {
+  document.getElementById('login-form').style.display = 'none';
+  document.getElementById('signup-form').style.display = 'none';
+  document.getElementById('verifyPopup').style.display = 'none';
+  document.getElementById('forgotPasswordPopup').style.display = 'none';
+  document.getElementById('forgotPasswordVerifyPopup').style.display = 'block';
+}
+
+forgotPasswordSubmitBtn.addEventListener('click', function (event) {
+  event.preventDefault();
+
+  const email = document.getElementById('forgot-password-email').value;
+
+  if (email.length < 1) {
+    forgotPasswordFieldIssuesDiv.innerHTML = 'Please Fill out Email';
+    return;
+  }
+
+  // Clear previous messages
+  forgotPasswordFieldIssuesDiv.innerHTML = '';
+
+  forgotPassword(email); // Pass just the email, not email.value
+})
+
+function forgotPassword(email) {
+  fetch('/forgot/password/submit', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email }) // Send the email directly
+  })
+    .then(response => {
+      if (response.status === 404) {
+        forgotPasswordFieldIssuesDiv.innerHTML = 'User Not Found';
+      } else {
+        // Clear the input field and any error messages
+        document.getElementById('forgot-password-email').value = '';
+        forgotPasswordFieldIssuesDiv.innerHTML = '';
+
+        // Open the verification pane
+        openForgotPasswordVerifyPane();
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      forgotPasswordFieldIssuesDiv.innerHTML = 'An error occurred. Please try again later.';
+    });
+}
+
 
 const loginSubmissionBtn = document.getElementById('login-submit');
 loginSubmissionBtn.addEventListener('click', function (event) {

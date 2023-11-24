@@ -12,4 +12,8 @@ router.get('/dashboard', async (req, res) => {
   res.sendFile(path.join(__dirname, '..', '..', 'HTML', 'dashboard.html'));
 });
 
+router.get('/reset/password/page', async (req, res) => {
+  res.sendFile(path.join(__dirname, '..', '..', 'HTML', 'forgotPasswordPage.html'));
+})
+
 module.exports = router;

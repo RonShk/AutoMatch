@@ -207,6 +207,9 @@ header {
 
 /* Homepage */
 
+#forgotPasswordLink:hover {
+  cursor: pointer;
+}
 .homepage-title {
   text-align: center;
   font-size: 45px;
@@ -381,7 +384,7 @@ input[type='checkbox'] {
   text-align: center;
 }
 
-#verifyPopup {
+#verifyPopup, #forgotPasswordPopup {
   display: none;
 }
 
