@@ -1,6 +1,6 @@
 # AutoMatch
 
-** Information **
+**Information**
 
 __Code Styling:__
 - Variable Naming: Camel Case
